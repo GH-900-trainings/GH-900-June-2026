@@ -83,6 +83,16 @@ app.get('/', (req, res) => {
   <script>
     tailwind.config = { darkMode: 'class' };
   </script>
+  <!-- Twemoji renders emoji (incl. flags) as images so they display consistently on every platform -->
+  <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
+  <style>
+    img.emoji {
+      height: 1em;
+      width: 1em;
+      margin: 0 0.05em 0 0.1em;
+      vertical-align: -0.1em;
+    }
+  </style>
 </head>
 <body class="min-h-screen bg-slate-100 text-slate-900 antialiased transition-colors duration-300 dark:bg-slate-950 dark:text-white">
   <div class="relative min-h-screen overflow-hidden">
@@ -120,6 +130,11 @@ app.get('/', (req, res) => {
   </div>
 
   <script>
+    // Render emoji (including country flags) as images for consistent cross-platform display
+    if (window.twemoji) {
+      twemoji.parse(document.body);
+    }
+
     // Theme toggle
     document.getElementById('theme-toggle').addEventListener('click', () => {
       const isDark = document.documentElement.classList.toggle('dark');
