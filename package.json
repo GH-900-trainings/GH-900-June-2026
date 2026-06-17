@@ -1,0 +1,12 @@
+{
+  "name": "hello-world-world-clock",
+  "version": "1.0.0",
+  "description": "A Node.js Express app showing Hello World and local time for multiple cities",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
