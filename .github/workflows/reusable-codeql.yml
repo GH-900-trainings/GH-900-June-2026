@@ -1,18 +1,8 @@
-name: CodeQL
+name: Reusable - CodeQL
 
+# Reusable workflow: called by main.yml. Not triggered on its own.
 on:
-  push:
-    branches: [main]
-  pull_request:
-  # schedule:
-  #   # Weekly scan (Mondays 06:00 UTC) to catch newly disclosed vulnerabilities.
-  #   - cron: "0 6 * * 1"
-  workflow_dispatch:
-
-# Cancel in-progress scans for the same branch/PR to save minutes.
-concurrency:
-  group: codeql-${{ github.ref }}
-  cancel-in-progress: true
+  workflow_call:
 
 jobs:
   analyze:

@@ -1,15 +1,8 @@
-name: CI
+name: Reusable - Tests
 
+# Reusable workflow: called by main.yml. Not triggered on its own.
 on:
-  push:
-    branches: [main]
-  pull_request:
-  workflow_dispatch:
-
-# Cancel in-progress runs for the same branch/PR to save minutes.
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  workflow_call:
 
 env:
   NODE_VERSION: "20"
