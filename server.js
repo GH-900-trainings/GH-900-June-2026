@@ -44,7 +44,7 @@ app.get('/api/times', (req, res) => {
 async function fetchWeather(city) {
   const url =
     'https://atlas.microsoft.com/weather/currentConditions/json' +
-    `?api-version=1.1&query=${city.lat},${city.lon}` +
+    `?api-version=1.1&query=${city.lat},${city.lon}&unit=metric` +
     `&subscription-key=${encodeURIComponent(AZURE_MAPS_KEY)}`;
 
   const res = await fetch(url);
