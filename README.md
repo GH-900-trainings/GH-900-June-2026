@@ -1,3 +1,5 @@
+[![Pipeline](https://github.com/GH-900-trainings/GH-900-June-2026/actions/workflows/main.yml/badge.svg)](https://github.com/GH-900-trainings/GH-900-June-2026/actions/workflows/main.yml)
+
 # GH-900-June-2026
 
 > ## 🎓 Training Recaps
