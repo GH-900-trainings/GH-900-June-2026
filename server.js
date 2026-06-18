@@ -514,6 +514,20 @@ app.get('/city/:slug', (req, res) => {
 </html>`);
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+// Start the server only when run directly, so tests can import the app
+// without binding to a fixed port.
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = {
+  app,
+  cities,
+  citySlug,
+  findCityBySlug,
+  fetchWeather,
+  fetchCityDetails,
+  isAzureMapsConfigured: () => Boolean(AZURE_MAPS_KEY),
+};

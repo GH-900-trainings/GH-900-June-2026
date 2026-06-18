@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Cancel in-progress runs for the same branch/PR to save minutes.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "20"
+
+jobs:
+  # ---- Stage 1: static checks ------------------------------------------------
+  lint:
+    name: Lint (syntax check)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - name: Syntax-check server and tests
+        run: |
+          node --check server.js
+          for f in test/*.test.js; do node --check "$f"; done
+
+  # ---- Stage 2: fast unit / route tests (run in parallel) --------------------
+  helpers:
+    name: Unit tests (helpers)
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - run: npm run test:helpers
+
+  webapp:
+    name: Web app route tests
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - run: npm run test:webapp
+
+  # ---- Stage 3: live Azure Maps connectivity ---------------------------------
+  azure-connectivity:
+    name: Azure Maps connectivity
+    needs: [helpers, webapp]
+    runs-on: ubuntu-latest
+    env:
+      AZURE_MAPS_KEY: ${{ secrets.AZURE_MAPS_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - name: Warn if Azure Maps key is missing
+        if: env.AZURE_MAPS_KEY == ''
+        run: echo "::warning::AZURE_MAPS_KEY secret not set — live Azure Maps tests will be skipped."
+      - run: npm run test:azure
