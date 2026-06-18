@@ -4,7 +4,12 @@
   "description": "A Node.js Express app showing Hello World and local time for multiple cities",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node --test",
+    "test:helpers": "node --test test/helpers.test.js",
+    "test:webapp": "node --test test/webapp.test.js",
+    "test:azure": "node --test test/azure.test.js",
+    "lint": "node --check server.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
