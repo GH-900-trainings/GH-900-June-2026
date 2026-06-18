@@ -14,15 +14,17 @@ A simple **Node.js + Express** web app that greets you with **"Hello World"** an
   - KL - Malaysia 🇲🇾
   - Bangkok 🇹🇭
   - India 🇮🇳
-- 🎨 Modern, responsive design built with **Tailwind CSS**
+- �️ **Live weather forecast** for each city, powered by **Azure Maps**
+- �🎨 Modern, responsive design built with **Tailwind CSS**
 - 🌙 **Light / Dark theme toggle** — your choice is remembered between visits
 - 🌐 Accurate time zones with automatic daylight-saving handling
 
 ## 🧩 How it works
 
 - **Node.js** runs the application on your machine.
-- **Express** serves the web page and a small `/api/times` endpoint.
+- **Express** serves the web page and small `/api/times` and `/api/weather` endpoints.
 - The browser calls `/api/times` once per second to keep all the clocks ticking.
+- The browser calls `/api/weather` to fetch the current conditions for each city from the **Azure Maps Weather** service (refreshed every 10 minutes).
 - Times are calculated using the built-in `Intl.DateTimeFormat` API with IANA time zones, so daylight-saving changes are handled automatically.
 
 ## 🚀 Getting started
@@ -30,6 +32,27 @@ A simple **Node.js + Express** web app that greets you with **"Hello World"** an
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (version 18 or newer recommended)
+- An **Azure Maps** account and subscription key (for the weather forecast)
+
+### Configure your Azure Maps key
+
+The weather forecast uses **Azure Maps**, so you need a subscription key:
+
+1. In the [Azure Portal](https://portal.azure.com/), create (or open) an **Azure Maps** account.
+2. Go to **Settings → Authentication** and copy the **Primary Key** (Shared Key authentication).
+3. Copy the example environment file to a real `.env` file:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+4. Open `.env` and paste your key:
+
+   ```
+   AZURE_MAPS_KEY=your-azure-maps-subscription-key-here
+   ```
+
+> The `.env` file is git-ignored so your key never gets committed. If `AZURE_MAPS_KEY` is missing, the clocks still work but each tile shows "Weather unavailable".
 
 ### Installation
 
@@ -71,6 +94,8 @@ In the terminal where the app is running, press **`Ctrl + C`**, or simply close 
 
 ```
 GH-900-June-2026/
+├── .env            # Your Azure Maps key (git-ignored, create from .env.example)
+├── .env.example    # Template for environment variables
 ├── package.json    # Project config and dependencies
 ├── server.js       # Express server + web page
 └── README.md       # This file
@@ -81,3 +106,4 @@ GH-900-June-2026/
 - [Node.js](https://nodejs.org/)
 - [Express](https://expressjs.com/)
 - [Tailwind CSS](https://tailwindcss.com/)
+- [Azure Maps](https://azure.microsoft.com/products/azure-maps/)
